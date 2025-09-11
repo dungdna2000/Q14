@@ -19,11 +19,21 @@ void week01() {
 	}
 
 	float s = 0;
-	for (int i = 0; i < n; i++) {
-		s += sqrt(x[i] * x[i] + y[i] * y[i]);
+	int min_i = 0;
+
+	float min_d = sqrt(x[0] * x[0] + y[0] * y[0]);
+	for (int i = 1; i < n; i++) {
+		float d = sqrt(x[i] * x[i] + y[i] * y[i]);
+		s += d;
+
+		if (d < min_d) {
+			min_d = d;
+			min_i = i;
+		}
 	}
 
 	cout << "Tong khoang cach: " << s << endl;
+	cout << "Diem (" << x[min_i] << "," << y[min_i] << ") co khoang cach gan nhat" << endl;
 }
 
 int main(int) {
