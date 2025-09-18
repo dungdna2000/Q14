@@ -24,19 +24,25 @@ struct Diem {
 
 #define PI 3.1415
 struct VongTron {
-	float x, y, r;
+	Diem tam; 
+	float r;
 	float DienTich(/*VongTron c*/) {
 		return PI * r * r;
 	}
 	void Nhap() {
-
+		cout << "Tam: "; tam.Nhap();
+		cout << "Ban kinh: "; cin >> r;
 	}
 	void Xuat() {
 
 	}
 
 	float khoang_cach_den(/*VongTron c1, */ VongTron c2) {
-		return sqrt((x-c2.x)* (x - c2.x) + (y - c2.y) * (y - c2.y));
+		return tam.khoang_cach_den(c2.tam);
+	}
+
+	bool chua(/*VongTron c,*/Diem p) {
+		return tam.khoang_cach_den(p) <= r;
 	}
 };
 
@@ -80,6 +86,7 @@ void week01() {
 #define MAX_FLOAT 9999999999
 
 void week02() {
+	
 	VongTron c[100];
 	int n;
 	cout << "Nhap so vong tron: ";
@@ -90,32 +97,30 @@ void week02() {
 		c[i].Nhap();
 	}
 
-	float s = 0;
-	int min_i = -1;
-	int min_j = -1;
+	Diem p[100];
 
-	float min_d = MAX_FLOAT;
+	int m;
+	cout << "Nhap so diem: ";
+	cin >> m;
 
-	for (int i = 0; i < n-1; i++) {
-		for (int j = i + 1; j < n; j++) {
-			float d = c[i].khoang_cach_den(c[j]);
-			if ((d < min_d) && (d > c[i].r + c[j].r)) {
-				min_d = d;
-				min_i = i;
-				min_j = j;
-			}
+	for (int i = 0; i < m; i++) {
+		cout << "Nhap diem thu " << i << ": ";
+		p[i].Nhap();
+	}
+
+	int max_s = -1;
+
+	for (int i = 0; i < n; i++) { // i = vong tron
+		int s = 0;
+		for (int j = 0; j < m; j++) {  // j = diem
+			if (c[i].chua(p[j])) s++;
+		}
+
+		if (s>max_s) {
+			?
 		}
 	}
 
-	if (min_i>=0 && min_j>=0) {
-		cout << "2 vong tron thoa dieu kien la: ";
-		c[min_i].Xuat();
-		c[min_j].Xuat();
-	}
-	else
-	{
-		cout << "Khong tim thay 2 vong trong thoa dieu kien" << endl;
-	}
 }
 
 int main(int) {
