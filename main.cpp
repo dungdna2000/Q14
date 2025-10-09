@@ -96,6 +96,8 @@ public:
 		mau = m;
 	}
 
+	PhanSo(int t): PhanSo(t,1) {}
+
 	PhanSo():PhanSo(0,1) {
 		// PhanSo(0,1)
 	}
@@ -109,16 +111,8 @@ public:
 		mau = mau / t;
 	}
 	
-	PhanSo cong(/*PhanSo a,*/ PhanSo b) {
-		PhanSo kq;
-		kq.tu = tu * b.mau + mau * b.tu;
-		kq.mau = mau * b.mau;
-
-		kq.toi_gian();
-		
-		return kq;
-	}
-	PhanSo tru(/*PhanSo a,*/ PhanSo b) {
+//	PhanSo cong(/*PhanSo a,*/ PhanSo b) 
+	PhanSo operator-(/*PhanSo a,*/ PhanSo b) {
 		PhanSo kq;
 		kq.tu = tu * b.mau - mau * b.tu;
 		kq.mau = mau * b.mau;
@@ -127,7 +121,19 @@ public:
 		return kq;
 	}
 
+	friend PhanSo operator+(PhanSo a, PhanSo b);
+
 };
+
+PhanSo operator+(PhanSo a, PhanSo b) {
+	PhanSo kq;
+	kq.tu = a.tu * b.mau + a.mau * b.tu;
+	kq.mau = a.mau * b.mau;
+
+	kq.toi_gian();
+
+	return kq;
+}
 
 class LaBaiTay {
 private:
@@ -328,17 +334,48 @@ public:
 	ThoiGian() :ThoiGian(0, 0, 0) {}
 	void Nhap() {}
 
-	ThoiGian cong(int ss) {
+	ThoiGian operator+(int ss) {
 		ThoiGian kq;
 
-		int sss = h * 3600 + m * 60 + s + ss;
+		int sss = 60 * (h*60 + m)+ s + ss;
 
 		kq.s = sss % 60;
-		kq.m = m;
-		kq.h = h;
+		kq.m = (sss / 60) % 60;
+		kq.h = sss / 3600;
 		return kq;
 	}
+
+	int operator-(/*ThoiGian a,*/ThoiGian b) {
+		int ssa = 60 * (h * 60 + m) + s;
+		int ssb = 60 * (b.h * 60 + b.m) + b.s;
+		return ssa - ssb;
+	}
+
+	friend ostream& operator<<(ostream&,ThoiGian);
+	friend istream& operator>>(istream& i, ThoiGian& a);
+
 };
+
+void f(int * a) {
+
+}
+
+void test()
+{
+	int b;
+	f(&b);
+}
+
+ostream& operator<<(ostream &os, ThoiGian a) {
+	os << a.h << ":" << a.m << ":" << a.s << endl;
+	return os;
+}
+
+istream& operator>>(istream& is, ThoiGian &a) {
+	is >> a.h >> a.m >> a.s;
+	return is;
+}
+
 
 PhanSo * week04() {
 	//PhanSo ps[10];
@@ -395,11 +432,22 @@ void week05_th() {
 }
 
 void week05() {
+	//PhanSo a(1, 2);
+	//PhanSo b(3, 2);
+	//PhanSo c(4, 2);
+	//PhanSo d = a + 5;
+	//PhanSo e = 11 + b;
+	ThoiGian t(1, 0, 0);
+	ThoiGian t1 = t + 65;
+	//t1.Xuat();
 
+	cin >> t;
+	cout << t1 << endl;
+	cout << t1 - t << endl;
 }
 
 int main(int) {
-
+	week05();
 
 	//week04();
 	return 1;
