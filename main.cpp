@@ -31,48 +31,48 @@ public:
 };
 
 #define PI 3.1415
-class VongTron {
-private: 
-	float r;
-public: 
-	Diem tam; 
-	float DienTich(/*VongTron c*/) {
-		return PI * r * r;
-	}
-	void Nhap() {
-		cout << "Tam: "; tam.Nhap();
-		cout << "Ban kinh: "; cin >> r;
-	}
-	void Xuat() {
-
-	}
-	VongTron(float x, float y, float rr):tam(x,y) {
-		r = rr;
-	}
-
-	VongTron() {
-		tam.x = 0;
-		tam.y = 0;
-		r = 1.0;
-	}
-
-	float khoang_cach_den(/*VongTron c1, */ VongTron c2) {
-		return tam.khoang_cach_den(c2.tam);
-	}
-
-	bool chua(/*VongTron c,*/Diem p) {
-		return tam.khoang_cach_den(p) <= r;
-	}
-
-	void setBanKinh(/*VongTron c,*/ float value) {
-		if (value < 0)
-		{
-			cout << "Ban kinh khong duoc phep la so am" << endl;
-			return;
-		}
-		r = value;
-	}
-};
+//class VongTron {
+//private: 
+//	float r;
+//public: 
+//	Diem tam; 
+//	float DienTich(/*VongTron c*/) {
+//		return PI * r * r;
+//	}
+//	void Nhap() {
+//		cout << "Tam: "; tam.Nhap();
+//		cout << "Ban kinh: "; cin >> r;
+//	}
+//	void Xuat() {
+//
+//	}
+//	VongTron(float x, float y, float rr):tam(x,y) {
+//		r = rr;
+//	}
+//
+//	VongTron() {
+//		tam.x = 0;
+//		tam.y = 0;
+//		r = 1.0;
+//	}
+//
+//	float khoang_cach_den(/*VongTron c1, */ VongTron c2) {
+//		return tam.khoang_cach_den(c2.tam);
+//	}
+//
+//	bool chua(/*VongTron c,*/Diem p) {
+//		return tam.khoang_cach_den(p) <= r;
+//	}
+//
+//	void setBanKinh(/*VongTron c,*/ float value) {
+//		if (value < 0)
+//		{
+//			cout << "Ban kinh khong duoc phep la so am" << endl;
+//			return;
+//		}
+//		r = value;
+//	}
+//};
 
 int uscln(int a, int b) {
 	a = abs(a);
@@ -283,44 +283,44 @@ void week01() {
 }
 #define MAX_FLOAT 9999999999
 
-void week02() {
-	
-	VongTron c[100];
-	int n;
-	cout << "Nhap so vong tron: ";
-	cin >> n;
+//void week02() {
+//	
+//	VongTron c[100];
+//	int n;
+//	cout << "Nhap so vong tron: ";
+//	cin >> n;
+//
+//	for (int i = 0; i < n; i++) {
+//		cout << "Nhap vong tron " << i << ": ";
+//		c[i].Nhap();
+//	}
+//
+//	Diem p[100];
+//
+//	int m;
+//	cout << "Nhap so diem: ";
+//	cin >> m;
+//
+//	for (int i = 0; i < m; i++) {
+//		cout << "Nhap diem thu " << i << ": ";
+//		p[i].Nhap();
+//	}
+//
+//	int max_s = -1;
+//
+//	for (int i = 0; i < n; i++) { // i = vong tron
+//		int s = 0;
+//		for (int j = 0; j < m; j++) {  // j = diem
+//			if (c[i].chua(p[j])) s++;
+//		}
+//	}
+//
+//}
 
-	for (int i = 0; i < n; i++) {
-		cout << "Nhap vong tron " << i << ": ";
-		c[i].Nhap();
-	}
-
-	Diem p[100];
-
-	int m;
-	cout << "Nhap so diem: ";
-	cin >> m;
-
-	for (int i = 0; i < m; i++) {
-		cout << "Nhap diem thu " << i << ": ";
-		p[i].Nhap();
-	}
-
-	int max_s = -1;
-
-	for (int i = 0; i < n; i++) { // i = vong tron
-		int s = 0;
-		for (int j = 0; j < m; j++) {  // j = diem
-			if (c[i].chua(p[j])) s++;
-		}
-	}
-
-}
-
-void week03() {
-	VongTron v(5, 6, 8);
-	cout << "Dien tich vong tron: " << v.DienTich() << endl;
-}
+//void week03() {
+//	VongTron v(5, 6, 8);
+//	cout << "Dien tich vong tron: " << v.DienTich() << endl;
+//}
 
 class ThoiGian {
 private: 
@@ -511,6 +511,48 @@ ostream& operator<<(ostream& os, CDate date) {
 	return os;
 }
 
+#define PI 3.1415
+
+class VongTron {
+protected:
+	float r1;
+public: 
+	VongTron() : VongTron(1.0) {}
+	VongTron(float rr) { r1 = rr; }
+	float DienTich() { return PI * r1 * r1; }
+	void Nhap() {
+		cout << "VongTron::Nhap()" << endl;
+		cin >> r1;
+	}
+};
+
+class Elip : public VongTron {
+	float r2;
+public: 
+	void XuatR2() {
+		cout << r2;
+	}
+	void Nhap() {
+		VongTron::Nhap();
+		cin >> r2;
+	}
+	float DienTich() { return PI * r1 * r2; }
+};
+
+
+//class Elip {
+//	float r1, r2;
+//public: 
+//	Elip(float rr1, float rr2) {
+//		r1 = rr1;
+//		r2 = rr2;
+//	}
+//	float DienTich() { return PI * r1 * r2; }
+//	void Nhap() {
+//		cin >> r1 >> r2;
+//	}
+//};
+
 
 
 void week06_lab() {
@@ -523,8 +565,11 @@ void week06_lab() {
 }
 
 int main(int) {
-	week06_lab();
+	VongTron c;
 
-	//week04();
+	Elip e;
+	e.Nhap();
+	cout << e.DienTich();
+
 	return 1;
 }
