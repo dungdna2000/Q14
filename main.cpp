@@ -356,16 +356,6 @@ public:
 
 };
 
-void f(int * a) {
-
-}
-
-void test()
-{
-	int b;
-	f(&b);
-}
-
 ostream& operator<<(ostream &os, ThoiGian a) {
 	os << a.h << ":" << a.m << ":" << a.s << endl;
 	return os;
@@ -375,7 +365,6 @@ istream& operator>>(istream& is, ThoiGian &a) {
 	is >> a.h >> a.m >> a.s;
 	return is;
 }
-
 
 PhanSo * week04() {
 	//PhanSo ps[10];
@@ -446,8 +435,95 @@ void week05() {
 	cout << t1 - t << endl;
 }
 
+class CTimeSpan {
+private: 
+	int ss;
+public: 
+	CTimeSpan(/* CTimSpan *this */int ss) {
+		this->ss = ss;
+	}
+
+	CTimeSpan(int h, int m, int s) {
+		ss = h * 3600 + m * 60 + s;
+	}
+
+	CTimeSpan operator+(CTimeSpan b) {
+		return CTimeSpan(ss + b.ss);
+	}
+	friend ostream& operator<<(ostream& os, CTimeSpan dt);
+};
+
+ostream& operator<<(ostream& os, CTimeSpan dt) {
+	os << dt.ss / 3600 << ":" << (dt.ss % 3600) / 60 << ":" << dt.ss % 60;
+	return os;
+}
+
+int DAYS_OF_MONTH[12] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+class CDate {
+	int d, m, y;
+
+	int getDaysOfMonth(int month, int year) {
+		bool nam_nhuan = (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0));
+		if (month == 2 && nam_nhuan) return 29;
+		return DAYS_OF_MONTH[month-1];
+	}
+
+public: 
+	CDate(int dd, int mm, int yy) {
+		d = dd;
+		m = mm;
+		y = yy;
+	}
+	friend ostream& operator<<(ostream& os, CDate date);
+
+	CDate operator+(int n) {
+		int d_result = d;
+		int m_result = m;
+		int y_result = y;
+
+		int remaining = n;
+
+
+		while (remaining > 0) {
+			int dd = getDaysOfMonth(m_result, y_result);
+			if (d_result + remaining <= dd) {
+				d_result += remaining;
+				remaining = 0;
+			}
+			else {
+				remaining -= (dd - d_result + 1);
+				d_result = 1;
+				m_result++;
+				if (m_result > 12) {
+					m_result = 1;
+					y_result++;
+				}
+			}
+		}
+
+		return CDate(d_result, m_result, y_result);
+	}
+};
+
+ostream& operator<<(ostream& os, CDate date) {
+	os << date.d << "/" << date.m << "/" << date.y;
+	return os;
+}
+
+
+
+void week06_lab() {
+	//CTimeSpan dt1(1, 0, 0);
+	//CTimeSpan dt2(0, 30, 1);
+	CDate d1(29, 1, 2025);
+
+	for (int n=365;n<=365*2;n++)
+		cout << d1 + n << endl;
+}
+
 int main(int) {
-	week05();
+	week06_lab();
 
 	//week04();
 	return 1;
