@@ -513,46 +513,27 @@ ostream& operator<<(ostream& os, CDate date) {
 
 #define PI 3.1415
 
-class VongTron {
+
+
+
+class HinhChuNhat {
 protected:
-	float r1;
+	float dai, rong;
 public: 
-	VongTron() : VongTron(1.0) {}
-	VongTron(float rr) { r1 = rr; }
-	float DienTich() { return PI * r1 * r1; }
-	void Nhap() {
-		cout << "VongTron::Nhap()" << endl;
-		cin >> r1;
-	}
-};
-
-class Elip : public VongTron {
-	float r2;
-public: 
-	void XuatR2() {
-		cout << r2;
+	void Xuat() {
 	}
 	void Nhap() {
-		VongTron::Nhap();
-		cin >> r2;
 	}
-	float DienTich() { return PI * r1 * r2; }
+	float DienTich() { return dai * rong; }
 };
 
-
-//class Elip {
-//	float r1, r2;
-//public: 
-//	Elip(float rr1, float rr2) {
-//		r1 = rr1;
-//		r2 = rr2;
-//	}
-//	float DienTich() { return PI * r1 * r2; }
-//	void Nhap() {
-//		cin >> r1 >> r2;
-//	}
-//};
-
+class HinhVuong : public HinhChuNhat {
+public: 
+	void Nhap() {
+		cin >> dai;
+		rong = dai;
+	}
+};
 
 
 void week06_lab() {
@@ -564,12 +545,77 @@ void week06_lab() {
 		cout << d1 + n << endl;
 }
 
-int main(int) {
-	VongTron c;
+class HocSinh {
+protected: 
+	string HoTen;
+	float Toan, Van;
+public: 
+	void Nhap() {
+		cout << "Ho ten: ";  cin >> HoTen;
+		cout << "Diem Toan: ";  cin >> Toan;
+		cout << "Diem Van: "; cin >> Van;
+	}
+	void Xuat() {
 
-	Elip e;
-	e.Nhap();
-	cout << e.DienTich();
+	}
+
+	float DiemTB() { return 0; };
+
+	//string XepLoai() {
+	//	if (DiemTB() < 5) return "Kem";
+	//	else if (DiemTB() < 6.5) return "Trung Binh";
+	//	else if (DiemTB() < 8) return "Kha";
+	//	else return "Gioi";
+	//}
+};
+
+class HocSinhKhoiA : public HocSinh {
+	float Ly;
+public:
+	void Nhap() {
+		HocSinh::Nhap();
+		cout << "Diem Ly: ";  cin >> Ly;
+	}
+	float DiemTB() { return (Toan + Van + Ly * 2) / 4; }
+};
+
+
+class Hinh {
+public:
+	float DienTich() {
+		cout << "Hinh::DienTich()" << endl;
+		return 0; 
+	}
+};
+
+
+class VongTron : public Hinh {
+protected:
+	float r1;
+public:
+	VongTron() : VongTron(1.0) {}
+	VongTron(float rr) { r1 = rr; }
+	float DienTich() {
+		cout << "Hinh::VongTron()" << endl;
+		return PI * r1 * r1; 
+	}
+	void Nhap() {
+		cout << "VongTron::Nhap()" << endl;
+		cin >> r1;
+	}
+	void Xuat() {
+		cout << "VongTron::Xuat()" << endl;
+		cout << r1;
+	}
+};
+
+int main(int) {
+
+	VongTron v(2.3);
+	Hinh* h;
+
+	h = &v;
+	h->DienTich();
 
 	return 1;
 }
