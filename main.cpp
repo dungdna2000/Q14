@@ -516,24 +516,14 @@ ostream& operator<<(ostream& os, CDate date) {
 
 
 
-class HinhChuNhat {
-protected:
-	float dai, rong;
-public: 
-	void Xuat() {
-	}
-	void Nhap() {
-	}
-	float DienTich() { return dai * rong; }
-};
 
-class HinhVuong : public HinhChuNhat {
-public: 
-	void Nhap() {
-		cin >> dai;
-		rong = dai;
-	}
-};
+//class HinhVuong : public HinhChuNhat {
+//public: 
+//	void Nhap() {
+//		cin >> dai;
+//		rong = dai;
+//	}
+//};
 
 
 void week06_lab() {
@@ -582,12 +572,13 @@ public:
 
 class Hinh {
 public:
-	float DienTich() {
-		cout << "Hinh::DienTich()" << endl;
-		return 0; 
-	}
+	virtual float DienTich() = 0;
+	virtual void Test() = 0;
+	//{
+	//	cout << "Hinh::DienTich()" << endl;
+	//	return 0; 
+	//}
 };
-
 
 class VongTron : public Hinh {
 protected:
@@ -609,13 +600,110 @@ public:
 	}
 };
 
+class HinhChuNhat: public Hinh {
+protected:
+	float dai, rong;
+
+public:
+	HinhChuNhat(float d, float r) {
+		dai = d;
+		rong = r;
+	}
+	float DienTich() { return dai * rong; }
+};
+
+
+class Airplane {
+protected: 
+	float weight;
+public: 
+
+	Airplane() {
+		cout << "Airplane::Airplane()" << endl;
+	}
+	Airplane(float w) {
+		weight = w;
+	}
+};
+
+class F16: public Airplane {
+public: 
+	F16(float w, int invisibleLevel):Airplane(w) {
+
+	}
+};
+
+#define DEN 1
+#define TRANG 0
+
+class BanCo {
+	QuanCo* bc[8][8];
+public: 
+	BanCo() {
+		for (int h = 0; h < 8; h++)
+			for (int c = 0; c < 8; c++)
+				bc[h][c] = NULL;
+	
+		bc[0][0] = new Xe(DEN);
+
+	}
+
+	QuanCo * getQuanCo(int h, int c) {
+		return bc[h][c];
+	}
+};
+
+class QuanCo {
+protected: 
+	int mau;  // 0 = trang, 1 = den
+public:
+	int getMau() { return mau;  }
+	QuanCo(int m) { mau = m; }
+	virtual bool nuocDiHopLe(BanCo &banco, int fromH, int fromC, int toH, int toC) = 0;
+};
+
+class Xe : public QuanCo {
+public: 
+	Xe(int m): QuanCo(m) {}
+
+	bool nuocDiHopLe(BanCo& banco, int fromH, int fromC, int toH, int toC) {
+		if (toH < 0 || toH>7 || toC < 0 || toC > 7) return false;
+		if (fromH != toH && fromC != toC) return false;
+
+		if (fromH == toH) {
+			if (fromC < toC) {
+				for (int c = fromC + 1; c < toC; c++) {
+					if (banco.getQuanCo(fromH, c) != NULL) return false;
+				}
+
+				QuanCo* qc = banco.getQuanCo(toH, toC);
+				if (qc->getMau() == mau) return false;
+
+				banco.moveQuanCo(this, toH, toC);
+			}
+		}
+	}
+};
+
 int main(int) {
 
-	VongTron v(2.3);
-	Hinh* h;
+	F16 a1(5000,1);
 
-	h = &v;
-	h->DienTich();
+	//VongTron h0(2.3);
+	//HinhChuNhat h1(3, 4);
+	//VongTron h2(3.5);
+
+	//Hinh* h[3];
+	//h[0] = &h0;
+	//h[1] = &h1;
+	//h[2] = &h2;
+
+	//int n = 3;
+
+	//float tong = 0;
+	//for (int i= 0; i < n; i++) {
+	//	tong += h[i]->DienTich();
+	//}
 
 	return 1;
 }
